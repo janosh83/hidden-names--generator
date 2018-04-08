@@ -21,7 +21,7 @@ length = 6
 WORD_COUNT = len(word_list)
 NUM_OF_HIDDEN_WORDS = 10
 WOLF_INDEX = 13
-LISTS_TO_GENERATE = 1
+LISTS_TO_GENERATE = 300
 
 hidden_words = set()
 
@@ -29,33 +29,35 @@ if(width * length != len(word_list)):
     print("incorrect number of word in list found:", len(word_list), "expected ", width*length)
 
 else:
-    for i in range(0, LISTS_TO_GENERATE):
-        hidden_words = set()
-        for j in range(0, NUM_OF_HIDDEN_WORDS):
-            k = randint(0, WORD_COUNT - 1)
-            w = word_list[k]
-            #print(set([w]), hidden_words, set([w]) & hidden_words)
 
-            while(w in hidden_words) or (w == word_list[WOLF_INDEX]):
-                # selected word has been already selected as hidden word or it is a wolf
+
+    #print table
+    filename = "hidden_names.html"
+
+    with open(filename,"w") as f:
+
+        f.write('<html><head> <meta charset="UTF-8"> <title>Hidden names</title>')
+        f.write("<body>")
+
+        for i in range(0, LISTS_TO_GENERATE):
+            hidden_words = set()
+            for j in range(0, NUM_OF_HIDDEN_WORDS):
                 k = randint(0, WORD_COUNT - 1)
                 w = word_list[k]
-                #print(set([w]), hidden_words, set([w]) & hidden_words)
+                # print(set([w]), hidden_words, set([w]) & hidden_words)
 
-            #print("adding",w)
-            hidden_words.add(w)
+                while (w in hidden_words) or (w == word_list[WOLF_INDEX]):
+                    # selected word has been already selected as hidden word or it is a wolf
+                    k = randint(0, WORD_COUNT - 1)
+                    w = word_list[k]
+                    # print(set([w]), hidden_words, set([w]) & hidden_words)
 
-        print(hidden_words)
+                # print("adding",w)
+                hidden_words.add(w)
 
-        #print table
-        filename = "table_"+str(i)+".html"
+            print(hidden_words)
 
-        with open(filename,"w") as f:
-
-            print("writing file", filename)
-
-            f.write('<html><head> <meta charset="UTF-8"> <title>Hidden names</title>')
-            f.write("<body>")
+            f.write("<h1>Map "+ str(i) + "</h1>")
             f.write('<table border="1" cellpadding="10">')
 
             for j in range(0, width):
@@ -78,8 +80,11 @@ else:
                 line += "</tr>"
                 f.write(line)
 
-            f.write("</table> </body> </html>")
-            f.close()
+            f.write("</table>")
+            f.write("<br>")
+
+        f.write("</body> </html>")
+        f.close()
 
 
 
